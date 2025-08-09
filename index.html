@@ -4,62 +4,31 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Be Human</title>
-  <meta name="description" content="A stern focus timer that confronts your screen time." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0a0a0a" />
   <link rel="apple-touch-icon" href="assets/icon-180.png" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#0a0a0a" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="container">
-    <header class="hdr">
-      <h1>Be Human</h1>
-      <p class="muted">A stern timer to help you notice where your life is going.</p>
-    </header>
-    <section class="card timer">
-      <div>
-        <div class="label">Elapsed</div>
-        <div id="elapsed" class="elapsed">00:00:00</div>
-      </div>
-      <div class="actions">
-        <button id="startBtn" class="btn btn-green">Be Human</button>
-        <button id="endBtn" class="btn btn-red hidden">End</button>
-        <button id="resetBtn" class="btn btn-ghost hidden">Reset</button>
-      </div>
-    </section>
-    <section class="grid">
-      <div class="card">
-        <h2>Lifetime Projection</h2>
-        <p class="muted">How much of an average life this habit can quietly consume.</p>
-        <div class="projection">
-          <pre id="projectionText" class="mono">Stop a session to see your lifetime projection.</pre>
-        </div>
-        <p class="fineprint">This assumes the session length you just recorded repeats every day for your entire life.</p>
-      </div>
-      <div class="card">
-        <h2>Assumptions</h2>
+  <main class="wrap">
+    <header class="brand">Be Human</header>
+    <button id="actionBtn" class="bigbtn" aria-live="polite">Be Human</button>
+    <section id="results" class="results" aria-live="polite">
+      <div id="elapsed" class="elapsed"> </div>
+      <div id="projection" class="projection muted">Tap “End” to see the lifetime projection.</div>
+      <div class="assumptions">
         <label>Life expectancy (years)
           <input type="number" id="lifeYears" min="30" max="120" step="1" value="79" />
         </label>
         <label>Times per day you spend about this long on screens
           <input type="number" id="perDay" min="1" max="48" step="1" value="1" />
         </label>
-        <p class="fineprint">Tip: If your phone reports ~3 hours/day, run a 3‑hour session once and set “Times per day” to 1.</p>
-        <div id="installBox" class="install hidden">
-          <strong>Install tip:</strong> On iPhone Safari, tap <span class="share">Share</span> → <b>Add to Home Screen</b>. On Android Chrome, look for <b>Install app</b>.
-        </div>
-        <div id="proBox" class="pro">
-          <button id="proBtn" class="btn btn-ghost">Go Pro</button>
-          <span class="muted">Support development (opens a checkout link).</span>
-        </div>
       </div>
+      <p class="tiny muted">This assumes the session length you just recorded repeats every day for your entire life.</p>
+      <p class="tiny muted install-hint">Install tip: Safari → Share → <b>Add to Home Screen</b>.</p>
     </section>
-    <section class="card nudge">
-      Be human, not hypnotized. Guard your hours like they’re your last — because one day, they will be.
-    </section>
-    <footer class="foot muted">v1.0 • Local-only • No accounts • Works offline</footer>
   </main>
   <script src="app.js"></script>
 </body>

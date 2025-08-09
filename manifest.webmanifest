@@ -1,7 +1,6 @@
 {
   "name": "Be Human",
   "short_name": "Be Human",
-  "description": "A stern focus timer that confronts your screen time.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
