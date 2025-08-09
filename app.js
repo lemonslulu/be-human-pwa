@@ -1,5 +1,73 @@
-(()=>{const e=document.getElementById("actionBtn"),t=document.getElementById("elapsed"),n=document.getElementById("projection"),a=document.getElementById("lifeYears"),o=document.getElementById("perDay");a.value=+localStorage.getItem("bh:life")||79,o.value=+localStorage.getItem("bh:perDay")||1;let l=!1,d=null,s=0,i;function r(e){return String(e).padStart(2,"0")}function u(e){const t=Math.floor(e/1e3),n=Math.floor(t/3600),a=Math.floor(t%3600/60),o=t%60;return`${r(n)}:${r(a)}:${r(o)}`}function c(e){const t=Math.min(48,Math.max(1,Number(o.value||1))),l=Math.min(120,Math.max(30,Number(a.value||79))),d=e*t*l*365.25,s=31557600000,i=d/s,r=Math.floor(i),c=Math.round((i-r)*365.25),m=i>=1?i>=10?i.toFixed(1):i.toFixed(2):i.toFixed(3);return`Elapsed: ${u(e)}
-At this pace, over a ${l}-year life, you'd spend about ${m} years of it on a screen.
-That’s roughly ${r} years and ${c} days.
+(()=>{
+  const LIFE_YEARS = 78.4;      // fixed per user (US average)
+  const PER_DAY = 1;            // assume the recorded session repeats once per day
 
-(Example context: Many estimates suggest humans spend ~26 years asleep.)`}function m(){l=!0,d=Date.now(),s=0,e.textContent="End",t.textContent="",n.textContent="Tap “End” to see the lifetime projection.",clearInterval(i),i=setInterval(()=>{l&&null!=d&&(s=Date.now()-d)},200),navigator.vibrate?.(20)}function p(){null!=d&&(l=!1,clearInterval(i),s=Date.now()-d,e.textContent="Be Human",n.textContent=c(s),navigator.vibrate?.([10,40,20]))}e.addEventListener("click",(()=>{l?p():m()})),a.addEventListener("input",(()=>{const e=Math.min(120,Math.max(30,Number(a.value||79)));localStorage.setItem("bh:life",""+e)})),o.addEventListener("input",(()=>{const e=Math.min(48,Math.max(1,Number(o.value||1)));localStorage.setItem("bh:perDay",""+e)}));(window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone)||document.querySelector(".install-hint").classList.remove("hidden")})();
+  const btn = document.getElementById('actionBtn');
+  const timerEl = document.getElementById('liveTimer');
+  const projEl = document.getElementById('projection');
+
+  let isRunning = false;
+  let startTime = null;
+  let elapsedMs = 0;
+  let tick;
+
+  const pad = (n)=> String(n).padStart(2,'0');
+  const fmt = (ms)=>{
+    const s = Math.floor(ms/1000);
+    const h = Math.floor(s/3600);
+    const m = Math.floor((s%3600)/60);
+    const sec = s%60;
+    return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+  };
+
+  function projectionText(ms){
+    const totalMs = ms * PER_DAY * LIFE_YEARS * 365.25;
+    const MSY = 31557600000; // 365.25 days
+    const years = totalMs / MSY;
+    const whole = Math.floor(years);
+    const days = Math.round((years - whole) * 365.25);
+    const approx = years >= 1 ? (years >= 10 ? years.toFixed(1) : years.toFixed(2)) : years.toFixed(3);
+    return `At this pace, over a ${LIFE_YEARS}-year life, you'd spend about ${approx} years of it on a screen.
+That’s roughly ${whole} years and ${days} days.
+(Assuming you repeat this session once per day.)`;
+  }
+
+  function start(){
+    isRunning = true;
+    startTime = Date.now();
+    elapsedMs = 0;
+    btn.textContent = 'End';
+    tick = setInterval(()=>{
+      if(isRunning && startTime!=null){
+        elapsedMs = Date.now() - startTime;
+        timerEl.textContent = fmt(elapsedMs);
+      }
+    }, 200);
+    navigator.vibrate?.(20);
+  }
+
+  function stop(){
+    if(startTime==null) return;
+    isRunning = false;
+    clearInterval(tick);
+    elapsedMs = Date.now() - startTime;
+    timerEl.textContent = fmt(elapsedMs);
+    btn.textContent = 'Be Human';
+    projEl.textContent = projectionText(elapsedMs);
+    navigator.vibrate?.([10,40,20]);
+  }
+
+  btn.addEventListener('click', ()=>{
+    if(!isRunning) start(); else stop();
+  });
+
+  // Initial render
+  timerEl.textContent = '00:00:00';
+
+  // PWA: service worker register
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('service-worker.js').catch(console.error);
+    });
+  }
+})();

@@ -1,14 +1,22 @@
-:root{--bg:#0a0a0a;--fg:#fafafa;--muted:#9ca3af;--border:#262626;--red:#dc2626;--red-press:#ef4444}
-*{box-sizing:border-box}html,body{height:100%}
+:root{--bg:#0a0a0a;--fg:#fafafa;--muted:#9ca3af;--red:#dc2626;--red-press:#ef4444}
+*{box-sizing:border-box}
+html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
-.wrap{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px}
+.wrap{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px;text-align:center}
 .brand{position:fixed;top:14px;left:16px;color:#e5e7eb;font-weight:800;letter-spacing:.02em}
-.bigbtn{width:min(100%,780px);height:min(68dvh,760px);background:var(--red);color:#fff;border:none;border-radius:28px;font-weight:900;font-size:clamp(28px,8vw,64px);letter-spacing:.02em;box-shadow:0 8px 20px rgba(0,0,0,.35);padding:8px 20px;cursor:pointer}
+.bigbtn{
+  width:min(85dvw,85dvh);
+  height:min(85dvw,85dvh);
+  border-radius:50%;
+  background:var(--red);
+  color:#fff;
+  border:none;
+  font-weight:900;
+  font-size:clamp(26px,7.5vw,46px);
+  letter-spacing:.02em;
+  box-shadow:0 10px 26px rgba(0,0,0,.4);
+  cursor:pointer;
+}
 .bigbtn:active{background:var(--red-press);transform:translateY(1px)}
-.results{max-width:780px;width:100%;text-align:center}
-.elapsed{font-weight:800;font-size:clamp(16px,4.5vw,22px);margin-top:4px}
-.projection{font-size:clamp(14px,4vw,16px);margin-top:8px;white-space:pre-wrap}
-.assumptions{display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-label{font-size:12px;color:#e5e7eb;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-input[type=number]{width:140px;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0a0a0a;color:var(--fg)}
-.tiny{font-size:12px;margin-top:6px}.muted{color:var(--muted)}
+.timer{font-size:clamp(24px,7vw,36px);font-weight:800}
+.projection{max-width:780px;color:var(--muted);font-size:clamp(14px,4vw,16px);white-space:pre-wrap}

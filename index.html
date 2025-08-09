@@ -14,20 +14,13 @@
 <body>
   <main class="wrap">
     <header class="brand">Be Human</header>
+
     <button id="actionBtn" class="bigbtn" aria-live="polite">Be Human</button>
-    <section id="results" class="results" aria-live="polite">
-      <div id="elapsed" class="elapsed"> </div>
-      <div id="projection" class="projection muted">Tap “End” to see the lifetime projection.</div>
-      <div class="assumptions">
-        <label>Life expectancy (years)
-          <input type="number" id="lifeYears" min="30" max="120" step="1" value="79" />
-        </label>
-        <label>Times per day you spend about this long on screens
-          <input type="number" id="perDay" min="1" max="48" step="1" value="1" />
-        </label>
-      </div>
-      <p class="tiny muted">This assumes the session length you just recorded repeats every day for your entire life.</p>
-      <p class="tiny muted install-hint">Install tip: Safari → Share → <b>Add to Home Screen</b>.</p>
+
+    <div id="liveTimer" class="timer">00:00:00</div>
+
+    <section id="projection" class="projection muted" aria-live="polite">
+      Tap “End” to see your lifetime projection (assumes this session repeats once per day over 78.4 years).
     </section>
   </main>
   <script src="app.js"></script>
