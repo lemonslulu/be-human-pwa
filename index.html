@@ -13,16 +13,39 @@
 </head>
 <body>
   <main class="wrap">
-    <header class="brand">Be Human</header>
+    <header class="brand">
+      <span>Be Human</span>
+      <button id="installBtn" class="install-link" aria-haspopup="dialog" aria-controls="installModal">Install</button>
+    </header>
 
     <button id="actionBtn" class="bigbtn" aria-live="polite">Be Human</button>
 
-    <div id="liveTimer" class="timer">00:00:00</div>
+    <div id="liveTimer" class="timer" aria-live="polite">00:00:00</div>
 
     <section id="projection" class="projection muted" aria-live="polite">
-      Tap “End” to see your lifetime projection (assumes this session repeats once per day over 78.4 years).
+      Tap “End” to see your lifetime projection (assumes this session repeats once per day over <b>78.4 years</b>).
     </section>
   </main>
+
+  <!-- Install Modal -->
+  <div id="installModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="installTitle" hidden>
+    <div class="modal-card">
+      <h2 id="installTitle">Add to Home Screen</h2>
+      <div id="iosSteps" class="steps hidden">
+        <ol>
+          <li>Open this site in <b>Safari</b>.</li>
+          <li>Tap <span class="share">Share</span>.</li>
+          <li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+        </ol>
+      </div>
+      <div id="pwaSteps" class="steps hidden">
+        <p>You can install this app.</p>
+        <button id="installConfirm" class="btn">Install now</button>
+      </div>
+      <button id="closeModal" class="btn-ghost">Close</button>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,15 +1,29 @@
 (()=>{
-  const LIFE_YEARS = 78.4;      // fixed per user (US average)
-  const PER_DAY = 1;            // assume the recorded session repeats once per day
+  const LIFE_YEARS = 78.4;  // fixed
+  const PER_DAY = 1;        // fixed
+  const MS_PER_DAY = 86400000;
 
   const btn = document.getElementById('actionBtn');
   const timerEl = document.getElementById('liveTimer');
   const projEl = document.getElementById('projection');
 
+  const installBtn = document.getElementById('installBtn');
+  const modal = document.getElementById('installModal');
+  const closeModal = document.getElementById('closeModal');
+  const iosSteps = document.getElementById('iosSteps');
+  const pwaSteps = document.getElementById('pwaSteps');
+  const installConfirm = document.getElementById('installConfirm');
+
   let isRunning = false;
   let startTime = null;
   let elapsedMs = 0;
   let tick;
+  let deferredPrompt = null; // Chrome/Android beforeinstallprompt
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
 
   const pad = (n)=> String(n).padStart(2,'0');
   const fmt = (ms)=>{
@@ -20,16 +34,11 @@
     return `${pad(h)}:${pad(m)}:${pad(sec)}`;
   };
 
-  function projectionText(ms){
-    const totalMs = ms * PER_DAY * LIFE_YEARS * 365.25;
-    const MSY = 31557600000; // 365.25 days
-    const years = totalMs / MSY;
-    const whole = Math.floor(years);
-    const days = Math.round((years - whole) * 365.25);
-    const approx = years >= 1 ? (years >= 10 ? years.toFixed(1) : years.toFixed(2)) : years.toFixed(3);
-    return `At this pace, over a ${LIFE_YEARS}-year life, you'd spend about ${approx} years of it on a screen.
-That’s roughly ${whole} years and ${days} days.
-(Assuming you repeat this session once per day.)`;
+  function projectionDays(ms){
+    const totalMs = ms * PER_DAY * LIFE_YEARS * 365.25; // ms-per-day * life days
+    const days = totalMs / MS_PER_DAY;
+    const rounded = days >= 10 ? days.toFixed(1) : days.toFixed(2);
+    return `At this pace, over ${LIFE_YEARS} years, you'd spend about ${rounded} days of your life on a screen.`;
   }
 
   function start(){
@@ -53,7 +62,8 @@ That’s roughly ${whole} years and ${days} days.
     elapsedMs = Date.now() - startTime;
     timerEl.textContent = fmt(elapsedMs);
     btn.textContent = 'Be Human';
-    projEl.textContent = projectionText(elapsedMs);
+    const text = projectionDays(elapsedMs) + '\n(Assuming you repeat this session once per day.)';
+    projEl.innerText = text;
     navigator.vibrate?.([10,40,20]);
   }
 
@@ -61,10 +71,37 @@ That’s roughly ${whole} years and ${days} days.
     if(!isRunning) start(); else stop();
   });
 
-  // Initial render
-  timerEl.textContent = '00:00:00';
+  // Install flow
+  function isiOS(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+  }
+  function showModal(){
+    modal.hidden = false;
+    if (deferredPrompt && !isiOS()) {
+      pwaSteps.classList.remove('hidden');
+      iosSteps.classList.add('hidden');
+    } else {
+      pwaSteps.classList.add('hidden');
+      iosSteps.classList.remove('hidden');
+    }
+  }
+  function hideModal(){ modal.hidden = true; }
 
-  // PWA: service worker register
+  installBtn.addEventListener('click', showModal);
+  closeModal.addEventListener('click', hideModal);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) hideModal(); });
+
+  if (installConfirm) {
+    installConfirm.addEventListener('click', async ()=>{
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      hideModal();
+    });
+  }
+
+  // PWA: service worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', ()=>{
       navigator.serviceWorker.register('service-worker.js').catch(console.error);
