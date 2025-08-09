@@ -1,0 +1,20 @@
+:root{--bg:#0a0a0a;--fg:#fafafa;--muted:#9ca3af;--card:#171717;--border:#262626;--green:#059669;--green-press:#10b981;--red:#dc2626;--red-press:#ef4444}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font:16px system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;background:var(--bg);color:var(--fg)}
+.container{max-width:960px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.hdr h1{margin:0;font-size:32px;font-weight:800}.muted{color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px}
+.timer{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.label{color:#9ca3af;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.elapsed{font-size:52px;font-weight:800;margin-top:6px}
+.actions{display:flex;gap:12px}.btn{border:none;border-radius:14px;padding:12px 18px;font-weight:700;color:#fff;cursor:pointer}
+.btn-green{background:var(--green)}.btn-green:active{background:var(--green-press)}
+.btn-red{background:var(--red)}.btn-red:active{background:var(--red-press)}
+.btn-ghost{background:transparent;border:1px solid #404040;color:#e5e7eb}.hidden{display:none}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:800px){.grid{grid-template-columns:1fr 1fr}}
+.projection{margin-top:10px;background:#0a0a0a;border:1px solid var(--border);border-radius:12px;min-height:120px;padding:12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap}
+.fineprint{color:#737373;font-size:12px;margin-top:6px}
+label{display:block;margin-top:12px}
+input[type=number]{margin-top:8px;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0a0a0a;color:var(--fg);width:100%}
+.install{margin-top:12px;background:#111827;border:1px dashed #374151;border-radius:12px;padding:12px}
+.install .share{display:inline-block;border:1px solid #374151;border-radius:6px;padding:0 6px;margin:0 4px}
+.nudge{font-weight:700;font-size:18px}.foot{font-size:12px;text-align:center;padding:8px 0}
